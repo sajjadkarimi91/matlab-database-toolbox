@@ -23,8 +23,7 @@ for n = 1:N
     end
 end
 
-% 
-collectname = 'ohlcv';
+
 
 
 %% mongo settings
@@ -34,9 +33,10 @@ mongo_setting.port = "27017";
 mongo_setting.dbname = "matlab_mongo";
 mongo_setting.user_name = "";% optional
 mongo_setting.password = "";% optional
+% 
+collectname = 'ohlcv';
 
-
-%% create mongo object
+%% create collection delete old documents & insert new documents in fast parallel 
 
 % call mongo object and connect to db
 db_ = MongoDB(mongo_setting);
@@ -48,13 +48,14 @@ db_.create_col(collectname, false);
 % print matlab_mongo database collections
 disp(db_.db_conn.CollectionNames)
 
-% delete old duplicate document
+% delete old duplicate documents
 d_filter(1).field = 'ind_stock';
 d_filter(1).val_list = 1:N;
 d_filter(2).field = 'ind_date';
 d_filter(2).val_list = 1:T;
-db_.del_from_col(collectname, d_filter);
+db_.del_from_col(collectname, d_filter); % first remove old same documents to avoid dublication problem
 
+%Don't forget to close the collection :)
 db_.close_db();
 
 % insert to db: matlab_mongo and collection: employee
@@ -74,7 +75,7 @@ parfor b= 1:num_batch
 
     db_ = MongoDB(mongo_setting);
     db_.insert_to_col(collectname, data_to_db(strt:stp));
-    db_.close_db();
+    db_.close_db(); %Don't forget to close the collection :)
 end
 
 
@@ -108,7 +109,7 @@ end
 isequaln(ohlcv_get, ohlcv)
 
 
-%% get data with feild selection
+%% get data for your selected feild 
 
 selected_fields = {'ind_stock', 'ind_date', 'high', 'low'};
 

@@ -1,6 +1,6 @@
 clear; clc; close all; format longG;% delete(timerfind);
 
-%%
+%% load csv dataset for inserting to MongoDB
 % https://www.thespreadsheetguru.com/blog/sample-data
 % Company Employee Example Data
 
@@ -9,12 +9,10 @@ data_ = readtable('Employee Sample Data.csv');
 % add employee ind to org data_
 data_.ind = (1:size(data_, 1))';
 
-% 
+%  convert table to structure format
 data_to_db_1 = table2struct(data_(1:10, :));
 data_to_db_2 = table2struct(data_(5:15, :));
 
-% 
-collectname = 'employee';
 
 %% mongo settings
 
@@ -24,6 +22,8 @@ mongo_setting.dbname = "matlab_mongo";
 mongo_setting.user_name = "";% optional
 mongo_setting.password = "";% optional
 
+% 
+collectname = 'employee';
 
 %% create mongo object
 
@@ -40,8 +40,11 @@ end
 
 %% create clolection
 
-% create collection if not exist
-db_.create_col(collectname, false);
+% When force_flag=true, delete the existing collection & create a new empty one
+% If force_flag=false, skip the collection if it already exists or create it if it does not 
+
+force_flag = true;
+db_.create_col(collectname, force_flag);
 
 % print matlab_mongo database collections
 disp(db_.db_conn.CollectionNames)
@@ -59,10 +62,9 @@ db_.insert_to_col(collectname, data_to_db_1);
 d_filter(1).field = 'ind';
 d_filter(1).val_list = [data_to_db_2.ind];
 
-% 
+% first remove old same documents to avoid dublication problem
 db_.del_from_col(collectname, d_filter);
-
-% 
+% then insert new ones
 db_.insert_to_col(collectname, data_to_db_2);
 
 %% drop collection
@@ -86,7 +88,7 @@ disp(db_.db_conn.CollectionNames)
 
 db_.close_db();
 
-%% get from db
+%% get data from db
 
 % call mongo object and connect to db
 db_ = MongoDB(mongo_setting);
