@@ -1,7 +1,9 @@
 # matlab-database-toolbox
-A MATLAB toolbox for using Mongodb database in MATLAB
-This toolbox usefull for machine learning  and data-engineering projects
-Postgres database manager will be added to toolbox
+A MATLAB toolbox for using Mongodb database in MATLAB.
+
+This toolbox usefull for machine learning  and data-engineering projects.
+
+Postgres database manager will be added to toolbox.
 
 ## Notes:
      Unfortunately, the user-password option may not work.
