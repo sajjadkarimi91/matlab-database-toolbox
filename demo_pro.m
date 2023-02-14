@@ -1,9 +1,9 @@
 clear; clc; close all; format longG;% delete(timerfind);
 
-%%
+%% An example for working with Open-High-Low-Close prices plus Volume
 
 % load ohlcv from mat-file
-load('ohlcv.mat')
+load('./sample-data/ohlcv.mat')
 
 ohlcv = ohlcv(1:10, 1000:end, :);
 
@@ -66,6 +66,7 @@ num_batch = 8;
 batch_size = ceil(length(data_to_db)/num_batch);
 stop = length(data_to_db);
 
+% for large documents above 10^5 parallel insert have a speed gain
 parfor b= 1:num_batch
     disp(b)
 

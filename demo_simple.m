@@ -4,7 +4,7 @@ clear; clc; close all; format longG;% delete(timerfind);
 % https://www.thespreadsheetguru.com/blog/sample-data
 % Company Employee Example Data
 
-data_ = readtable('Employee Sample Data.csv');
+data_ = readtable('./sample-data/Employee Sample Data.csv');
 
 % add employee ind to org data_
 data_.ind = (1:size(data_, 1))';
@@ -67,7 +67,7 @@ db_.del_from_col(collectname, d_filter);
 % then insert new ones
 db_.insert_to_col(collectname, data_to_db_2);
 
-%% drop collection
+%% create & drop a test collection
 
 collectname_test = 'test';
 
