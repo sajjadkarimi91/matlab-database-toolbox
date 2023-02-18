@@ -34,6 +34,7 @@ db_ = MongoDB(mongo_setting);
 if isempty(db_.db_conn.CollectionNames)
     disp('this database is empty')
 else
+    disp('list of collections in MongoDB')
     disp(db_.db_conn.CollectionNames)
 end
 
@@ -69,18 +70,20 @@ db_.insert_to_col(collectname, data_to_db_2);
 
 %% create & drop a test collection
 
-collectname_test = 'test';
+collectname_test = 'test_collection';
 
 % create test collection
 db_.create_col(collectname_test, false);
 
 % print matlab_mongo database collections
+disp('new list of collections in MongoDB by creating test_collection')
 disp(db_.db_conn.CollectionNames)
 
 % drop test collection
 db_.drop_collection(collectname_test);
 
 % print matlab_mongo database collections
+disp('list of collections in MongoDB after deleting test_collection')
 disp(db_.db_conn.CollectionNames)
 
 
