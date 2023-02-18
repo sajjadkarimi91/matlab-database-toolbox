@@ -46,7 +46,7 @@ db_ = MongoDB(mongo_setting);
 db_.create_col(collectname, false);
 
 % print matlab_mongo database collections
-disp('List of collections in MongoDB')
+disp('list of collections in MongoDB')
 disp(db_.db_conn.CollectionNames)
 
 % delete old duplicate documents
