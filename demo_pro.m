@@ -7,7 +7,7 @@ load('./sample-data/ohlcv.mat')
 
 ohlcv = ohlcv(1:10, 1000:end, :);
 
-% create data structure for insert to db
+% create data structure for insert to mongodb
 [N, T, ~] = size(ohlcv);
 data_to_db(N*T).ind_stock = [];
 for n = 1:N
@@ -46,6 +46,7 @@ db_ = MongoDB(mongo_setting);
 db_.create_col(collectname, false);
 
 % print matlab_mongo database collections
+disp('List of collections in MongoDB')
 disp(db_.db_conn.CollectionNames)
 
 % delete old duplicate documents
@@ -61,6 +62,7 @@ db_.close_db();
 % insert to db: matlab_mongo and collection: employee
 % db_.insert_to_col(collectname, data_to_db);
 
+disp('use batching and parfor for fast inserting')
 % use batching and parfor for fast inserting
 num_batch = 8;
 batch_size = ceil(length(data_to_db)/num_batch);
@@ -68,8 +70,6 @@ stop = length(data_to_db);
 
 % for large documents above 10^5 parallel insert have a speed gain
 parfor b= 1:num_batch
-    disp(b)
-
     strt = (b-1)*batch_size + 1;
     stp = b*batch_size;
     stp = min(stp, stop);
@@ -111,6 +111,8 @@ isequaln(ohlcv_get, ohlcv)
 
 
 %% get data for your selected feild 
+
+disp('get data for your selected feild')
 
 selected_fields = {'ind_stock', 'ind_date', 'high', 'low'};
 
