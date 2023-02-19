@@ -1,5 +1,5 @@
 # matlab-database-toolbox
-A MATLAB toolbox for using Mongodb database in MATLAB.
+A high-level toolbox for using Mongodb database in MATLAB.
 
 This toolbox usefull for machine learning  and data-engineering projects.
 
