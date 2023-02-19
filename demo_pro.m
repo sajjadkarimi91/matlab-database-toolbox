@@ -4,8 +4,7 @@ clear; clc; close all; format longG;% delete(timerfind);
 
 % load ohlcv from mat-file
 load('./sample-data/ohlcv.mat')
-
-ohlcv = ohlcv(1:10, 1000:end, :);
+ohlcv = ohlcv(1:10, 1000:end, :);% select some part of data
 
 % create data structure for insert to mongodb
 [N, T, ~] = size(ohlcv);
@@ -22,7 +21,6 @@ for n = 1:N
         data_to_db((n-1)*T+t).volume = ohlcv(n, t, 5);
     end
 end
-
 
 
 
@@ -107,12 +105,12 @@ for row_ = 1:length(d_data)
 end
 
 % verify
-isequaln(ohlcv_get, ohlcv)
+disp(['comparison get data with original: ',num2str(isequaln(ohlcv_get, ohlcv))])
 
 
 %% get data for your selected feild 
 
-disp('get data for your selected feild')
+disp('now get data for your selected feild')
 
 selected_fields = {'ind_stock', 'ind_date', 'high', 'low'};
 
@@ -121,6 +119,8 @@ db_ = MongoDB(mongo_setting);
 d_data = db_.get_from_col(collectname, d_filter, selected_fields);
 db_.close_db();
 
+disp('list of fields in getting data')
+disp(fieldnames(d_data))
 % convert struct(table) to 3D ohlcv (N*T*5)
 ohlcv_get = nan(N ,T , 2);
 for row_ = 1:length(d_data)

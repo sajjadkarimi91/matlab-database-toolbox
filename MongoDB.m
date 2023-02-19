@@ -56,7 +56,7 @@ classdef MongoDB < handle
             if ismember(collectname, obj.db_conn.CollectionNames)
                 flag_exist = 1;
                 if force_flag > 0
-                    remove(obj.db_conn, collectname,'{}')
+                    remove(obj.db_conn, collectname,'{}');
                 end
             end
 
