@@ -57,6 +57,7 @@ classdef MongoDB < handle
                 flag_exist = 1;
                 if force_flag > 0
                     remove(obj.db_conn, collectname,'{}');
+                    flag_exist = 0;
                 end
             end
 
